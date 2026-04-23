@@ -764,6 +764,77 @@
   letter-spacing: 0.03em;
 }
 
+.footer-bottom { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.footer-privacy-btn { font-size: 0.78rem; color: var(--text-light); opacity: 0.7; }
+.footer-privacy-btn:hover { color: var(--gold); opacity: 1; }
+
 @media (max-width: 768px) {
   .footer-top { grid-template-columns: 1fr; gap: 36px; }
+}
+
+/* ── Cookie Banner ──────────────────────────────── */
+.cookie-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(16, 16, 16, 0.97);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 40px;
+}
+.cookie-banner p { font-size: 0.875rem; color: var(--text-light); margin: 0; }
+.cookie-banner__policy-btn { background: none; border: none; cursor: pointer; color: var(--gold); font-size: 0.875rem; padding: 0; text-decoration: underline; }
+.cookie-banner__accept { white-space: nowrap; flex-shrink: 0; padding: 10px 24px; font-size: 0.85rem; }
+@media (max-width: 600px) {
+  .cookie-banner { flex-direction: column; padding: 20px 24px; text-align: center; }
+  .cookie-banner__accept { width: 100%; }
+}
+
+/* ── Privacy Policy Modal ───────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-box h2 { font-size: 1.6rem; margin-bottom: 4px; }
+.modal-date { font-size: 0.8rem; color: var(--text-light); margin-bottom: 24px; }
+.modal-box h3 { font-size: 1rem; color: var(--gold); margin: 20px 0 6px; }
+.modal-box p { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; }
+.modal-box a { color: var(--gold); }
+.modal-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  background: none; border: none;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background .2s;
+}
+.modal-close:hover { background: var(--border); color: var(--text); }
+@media (max-width: 600px) {
+  .modal-box { padding: 28px 20px; }
 }

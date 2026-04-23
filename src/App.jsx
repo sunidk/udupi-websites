@@ -96,6 +96,66 @@ function scrollTo(href) {
   document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
 }
 
+function PrivacyPolicyModal({ onClose }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-box" onClick={e => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+        <h2>Privacy Policy</h2>
+        <p className="modal-date">Last updated: April 2025</p>
+
+        <h3>1. Information We Collect</h3>
+        <p>When you contact us via the form on this website, we collect your name, business name, phone number, and message. We do not store this data on our servers — it is sent directly to our WhatsApp.</p>
+
+        <h3>2. Cookies & Advertising</h3>
+        <p>This site uses Google AdSense to display advertisements. Google AdSense uses cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to this site and/or other sites on the Internet.</p>
+        <p>You may opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noreferrer">Google Ads Settings</a>. Alternatively, you can opt out of a third-party vendor's use of cookies by visiting the <a href="https://optout.networkadvertising.org/" target="_blank" rel="noreferrer">Network Advertising Initiative opt-out page</a>.</p>
+
+        <h3>3. Third-Party Services</h3>
+        <p>We use Google Fonts and Google AdSense, which may collect data as described in <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google's Privacy Policy</a>.</p>
+
+        <h3>4. How We Use Your Information</h3>
+        <p>Information submitted via the contact form is used solely to respond to your enquiry about our web design services. We do not sell, trade, or transfer your information to third parties.</p>
+
+        <h3>5. Data Retention</h3>
+        <p>We do not retain personal data on our servers. Contact form submissions go directly to WhatsApp and are managed there.</p>
+
+        <h3>6. Your Rights</h3>
+        <p>You have the right to request deletion of any personal information you have provided to us. Contact us at <a href="mailto:udupiwebsites@gmail.com">udupiwebsites@gmail.com</a> for any privacy-related requests.</p>
+
+        <h3>7. Contact</h3>
+        <p>For any questions about this Privacy Policy, email us at <a href="mailto:udupiwebsites@gmail.com">udupiwebsites@gmail.com</a>.</p>
+      </div>
+    </div>
+  )
+}
+
+function CookieBanner({ onAccept }) {
+  return (
+    <div className="cookie-banner">
+      <p>
+        We use cookies to personalise ads and improve your experience. By continuing to use this site, you agree to our use of cookies.{' '}
+        <button className="cookie-banner__policy-btn" onClick={onAccept}>
+          Learn more
+        </button>
+      </p>
+      <button className="btn btn--primary cookie-banner__accept" onClick={onAccept}>
+        Got it
+      </button>
+    </div>
+  )
+}
+
 
 function CopyBtn({ value }) {
   const [copied, setCopied] = useState(false)
@@ -485,7 +545,7 @@ function Contact() {
   )
 }
 
-function Footer() {
+function Footer({ onPrivacyClick }) {
   return (
     <footer className="footer">
       <div className="container">
@@ -522,6 +582,7 @@ function Footer() {
         </div>
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} UdupiWebsites. Made with <svg style={{display:'inline',verticalAlign:'middle',marginBottom:'2px'}} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none" color="var(--gold)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> in Udupi.</p>
+          <button className="link-btn footer-privacy-btn" onClick={onPrivacyClick}>Privacy Policy</button>
         </div>
       </div>
     </footer>
@@ -529,6 +590,16 @@ function Footer() {
 }
 
 export default function App() {
+  const [showPrivacy, setShowPrivacy] = useState(false)
+  const [cookieAccepted, setCookieAccepted] = useState(
+    () => localStorage.getItem('cookie_consent') === 'yes'
+  )
+
+  const acceptCookie = () => {
+    localStorage.setItem('cookie_consent', 'yes')
+    setCookieAccepted(true)
+  }
+
   return (
     <>
       <Navbar />
@@ -540,7 +611,9 @@ export default function App() {
         <Testimonials />
         <Contact />
       </main>
-      <Footer />
+      <Footer onPrivacyClick={() => setShowPrivacy(true)} />
+      {!cookieAccepted && <CookieBanner onAccept={acceptCookie} />}
+      {showPrivacy && <PrivacyPolicyModal onClose={() => setShowPrivacy(false)} />}
     </>
   )
 }

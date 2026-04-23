@@ -445,7 +445,7 @@ function Testimonials() {
 }
 
 function Contact() {
-  const [form, setForm] = useState({ name: '', business: '', phone: '', message: '' })
+  const [form, setForm] = useState({ name: '', business: '', phone: '', email: '', message: '' })
   const [sent, setSent] = useState(null)
   const formRef = useRef(null)
 
@@ -458,11 +458,12 @@ function Contact() {
     setSent('whatsapp')
   }
 
-  const handleEmail = () => {
+  const handleEmail = e => {
+    e.preventDefault()
     if (!formRef.current.reportValidity()) return
-    const subject = `Website Enquiry from ${form.name} – ${form.business}`
-    const body = `Hi!\n\nI'm ${form.name} from ${form.business}.\n\n${form.message}\n\nMy phone: ${form.phone}`
-    window.open(`mailto:udupiwebsites@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`)
+
+    const mailto = `mailto:udupiwebsites@gmail.com?subject=Message from ${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom: ${encodeURIComponent(form.email)}%0APhone: ${encodeURIComponent(form.phone)}%0ABusiness: ${encodeURIComponent(form.business)}`
+    window.location.href = mailto
     setSent('email')
   }
 
@@ -521,12 +522,12 @@ function Contact() {
           {sent ? (
             <div className="contact-success">
               <svg className="success-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-              <h3>{sent === 'whatsapp' ? 'Opening WhatsApp!' : 'Opening your email!'}</h3>
+              <h3>{sent === 'whatsapp' ? 'Opening WhatsApp!' : 'Opening your email app!'}</h3>
               <p>I'll reply within a few hours. Looking forward to working with you.</p>
               <button className="btn btn--outline" onClick={() => setSent(null)}>Send Another</button>
             </div>
           ) : (
-            <form className="contact-form" ref={formRef}>
+            <form className="contact-form" ref={formRef} onSubmit={handleEmail}>
               <div className="form-group">
                 <label htmlFor="name">Your Name</label>
                 <input id="name" name="name" type="text" placeholder="Ravi Shetty" required value={form.name} onChange={handleChange} />
@@ -535,9 +536,15 @@ function Contact() {
                 <label htmlFor="business">Business Name</label>
                 <input id="business" name="business" type="text" placeholder="Ravi's Tiffin Centre" required value={form.business} onChange={handleChange} />
               </div>
-              <div className="form-group">
-                <label htmlFor="phone">Your Phone Number</label>
-                <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" required value={form.phone} onChange={handleChange} />
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="phone">Your Phone Number</label>
+                  <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" required value={form.phone} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Your Email</label>
+                  <input id="email" name="email" type="email" placeholder="ravi@example.com" required value={form.email} onChange={handleChange} />
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="message">Tell me about your business</label>
@@ -547,7 +554,7 @@ function Contact() {
                 <button type="button" className="btn btn--primary" onClick={handleWhatsApp}>
                   Send on WhatsApp
                 </button>
-                <button type="button" className="btn btn--outline" onClick={handleEmail}>
+                <button type="submit" className="btn btn--outline">
                   Send on Email
                 </button>
               </div>

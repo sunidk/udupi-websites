@@ -40,7 +40,7 @@
   font-family: var(--font-serif);
   font-size: 0.6rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(255, 255, 255);
   letter-spacing: 0.28em;
   margin-top: 3px;
 }
@@ -55,7 +55,7 @@
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text);
   letter-spacing: 0.02em;
   transition: color .2s, background .2s;
 }
@@ -658,6 +658,8 @@
   gap: 16px;
 }
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
+.form-actions { display: flex; gap: 12px; }
+.form-actions .btn { flex: 1; }
 .form-group { display: flex; flex-direction: column; gap: 7px; }
 .form-group label {
   font-size: 0.78rem;
